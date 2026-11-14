@@ -16,10 +16,16 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPTS = ROOT / "scripts"
 STOP = SCRIPTS / "stop.ps1"
 START = SCRIPTS / "start.ps1"
+
+# macOS 包不带 .ps1（入口是 .command 与 *-mac.sh），这里整体跳过
+if not (STOP.is_file() and START.is_file()):
+    pytest.skip("当前目录没有 PowerShell 启动脚本（macOS 侧用 .command），跳过", allow_module_level=True)
 
 # 只要出现「-State Listen」并且是拿来当唯一判断依据，就是回归
 STATE_LISTEN = re.compile(r"Get-NetTCPConnection[^\r\n]*-State\s+Listen", re.IGNORECASE)
