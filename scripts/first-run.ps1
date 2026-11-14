@@ -17,7 +17,7 @@ function Stop-Here([string]$m) {
     Say ''
     Say $m 'Red'
     Say ''
-    Say '看不懂的话，把上面这段文字截图发给给你这个包的人。'
+    Say '看不懂的话，把上面这段文字截图发到 GitHub 的 Issues 里（或贴给帮你装的人）。'
     exit 1
 }
 

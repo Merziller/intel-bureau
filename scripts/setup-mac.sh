@@ -9,7 +9,7 @@ VENV_PY="$ROOT/.venv/bin/python"
 
 say()  { printf '%s\n' "$*"; }
 step() { printf '\n==> %s\n' "$*"; }
-fail() { printf '\n[出错了] %s\n' "$*"; printf '看不懂的话，把这段文字截图发给给你这个包的人。\n'; exit 1; }
+fail() { printf '\n[出错了] %s\n' "$*"; printf '看不懂的话，把这段文字截图发到 GitHub 的 Issues 里（或贴给帮你装的人）。\n'; exit 1; }
 
 say ''
 say '=== 个人情报局 · 安装（macOS）==='

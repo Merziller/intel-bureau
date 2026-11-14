@@ -25,7 +25,7 @@ IDS = [p.relative_to(ROOT).as_posix() for p in ALL]
 
 # 没有 .command 入口时整体跳过（Windows 那边是 .bat / .ps1），Windows 入口见 test_launchers.py
 if not ALL:
-    pytest.skip("这个包里没有 macOS 入口（.command / *-mac.sh），跳过", allow_module_level=True)
+    pytest.skip("当前目录没有 macOS 入口（.command / *-mac.sh），跳过", allow_module_level=True)
 
 
 def _bash() -> str | None:

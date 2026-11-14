@@ -20,7 +20,7 @@ BATS = sorted(ROOT.glob("*.bat"))
 
 # macOS 包不带 .bat（入口是 .command），这里整体跳过；macOS 入口见 test_launchers_mac.py
 if not BATS:
-    pytest.skip("这个包里没有 .bat 启动器（macOS 版用 .command），跳过", allow_module_level=True)
+    pytest.skip("当前目录没有 .bat 启动器（macOS 侧用 .command），跳过", allow_module_level=True)
 
 
 def test_there_are_launchers():
