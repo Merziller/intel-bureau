@@ -1,5 +1,10 @@
 # 情报局工作台（Intel Bureau）
 
+[![tests](https://github.com/Merziller/intel-bureau/actions/workflows/tests.yml/badge.svg)](https://github.com/Merziller/intel-bureau/actions/workflows/tests.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![python 3.12](https://img.shields.io/badge/python-3.12-3776ab.svg)](requirements.txt)
+[![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS-lightgrey.svg)](#快速开始)
+
 每天按你设定的时间，从你加入白名单的**微信群、QQ 群、飞书群**采集消息，提炼出有价值的情报，生成「每日风向标」，推送到飞书 / 微信 / QQ / 邮箱（可多选），并在本地的「AI Agent 作战大屏」里实时展示整个过程。
 
 - **只读、只在本机运行**：服务只监听 `127.0.0.1:8765`，不上云；只有白名单群会被读取和存储。
@@ -255,6 +260,8 @@ bash scripts/tools/install-bundled-tools-mac.sh feishu    # 飞书（按 CPU 自
 ```
 
 测试使用临时目录，不会改动 `data/` 和 `config/settings.yaml`。外部服务都用假服务器（httpx MockTransport）测试。
+
+当前：**387 个测试**，本地 Windows 全绿；GitHub Actions 在 `windows-latest` 与 `macos-latest`（Apple Silicon）上各跑一遍 pytest + `init` / `demo seed` / `run --demo --dry-run` / `doctor`，见 [.github/workflows/tests.yml](.github/workflows/tests.yml)。
 
 ## 用 GitHub Desktop 维护
 
