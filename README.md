@@ -261,7 +261,7 @@ bash scripts/tools/install-bundled-tools-mac.sh feishu    # 飞书（按 CPU 自
 
 测试使用临时目录，不会改动 `data/` 和 `config/settings.yaml`。外部服务都用假服务器（httpx MockTransport）测试。
 
-当前：**409 个测试**（Windows 全跑；macOS 上会跳过几个只有 Windows 才有的检查，例如系统自带 OCR 和 `.bat` 启动器），本地 Windows 全绿；GitHub Actions 在 `windows-latest` 与 `macos-latest`（Apple Silicon）上各跑一遍 pytest + `init` / `demo seed` / `run --demo --dry-run` / `doctor`，见 [.github/workflows/tests.yml](.github/workflows/tests.yml)。
+当前：**414 个测试**（Windows 全跑；macOS 上会跳过几个只有 Windows 才有的检查，例如系统自带 OCR 和 `.bat` 启动器），本地 Windows 全绿；GitHub Actions 在 `windows-latest` 与 `macos-latest`（Apple Silicon）上各跑一遍 pytest + `init` / `demo seed` / `run --demo --dry-run` / `doctor`，见 [.github/workflows/tests.yml](.github/workflows/tests.yml)。
 
 ## 用 GitHub Desktop 维护
 
