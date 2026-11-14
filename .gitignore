@@ -1,0 +1,25 @@
+# 虚拟环境与缓存
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 运行数据、本地配置与密钥（锚定根目录，避免误伤 web/src/mock/data）
+/data/
+/config/settings.yaml
+/config/secrets.yaml
+
+# 第三方工具与参考源码（由脚本在本地下载，不进仓库）
+/third_party/
+
+# 前端
+web/node_modules/
+web/.vite/
+# 说明：web/dist 是构建产物，但为了让不懂代码的人 clone 下来就能用（不用装 Node.js），
+# 仓库里保留一份已构建的 dist。改了前端源码后请执行 npm run build 再提交。
+
+*.log
+Thumbs.db
+.DS_Store

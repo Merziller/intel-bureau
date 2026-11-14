@@ -1,0 +1,47 @@
+/** v2 mock：资源库与分群摘要。GitHub 用真实的开源项目（星数为示意），X / 公众号 / 网盘链接与人名均为虚构 */
+import type { DigestSpec, ResourceSpec } from './v2types'
+
+export const RESOURCES: ResourceSpec[] = [
+  { kind: 'github', title: 'anthropics/claude-code', url: 'https://github.com/anthropics/claude-code', meta: { stars: 38200, language: 'TypeScript', description: '运行在终端里的编程 Agent，能读写代码、执行命令' }, note: '子 Agent 并行就是用它', who: '老K', group: 'Claude Code 实战营', hoursAgo: 11 },
+  { kind: 'github', title: 'comfyanonymous/ComfyUI', url: 'https://github.com/comfyanonymous/ComfyUI', meta: { stars: 89500, language: 'Python', description: '节点式的扩散模型工作流界面与后端' }, who: '十三', group: 'ComfyUI 工作流研究', hoursAgo: 13 },
+  { kind: 'github', title: 'openai/whisper', url: 'https://github.com/openai/whisper', meta: { stars: 79300, language: 'Python', description: '多语种语音识别模型，可直接输出带时间轴的字幕' }, note: '字幕流水线第一步', who: 'Kevin', group: '短剧出海交流', hoursAgo: 3 },
+  { kind: 'github', title: 'n8n-io/n8n', url: 'https://github.com/n8n-io/n8n', meta: { stars: 128000, language: 'TypeScript', description: '可自托管的工作流自动化平台，400+ 集成' }, who: 'Ryan', group: '飞书 · 增长小组', hoursAgo: 12 },
+  { kind: 'github', title: 'FunAudioLLM/CosyVoice', url: 'https://github.com/FunAudioLLM/CosyVoice', meta: { stars: 15800, language: 'Python', description: '多语种语音合成，支持少样本音色克隆' }, who: '阿杰', group: '短剧出海交流', hoursAgo: 9 },
+  { kind: 'github', title: 'Kosinkadink/ComfyUI-AnimateDiff-Evolved', url: 'https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved', meta: { stars: 3100, language: 'Python', description: 'ComfyUI 的 AnimateDiff 扩展节点' }, who: '画画的阿木', group: 'ComfyUI 工作流研究', hoursAgo: 14 },
+  { kind: 'github', title: 'ollama/ollama', url: 'https://github.com/ollama/ollama', meta: { stars: 152000, language: 'Go', description: '在本机运行大模型的命令行工具' }, who: '数据狗', group: 'Claude Code 实战营', hoursAgo: 6 },
+  { kind: 'github', title: 'doocs/md', url: 'https://github.com/doocs/md', meta: { stars: 10200, language: 'Vue', description: 'Markdown 转微信公众号排版的编辑器' }, who: '运营喵', group: '飞书 · 内容中台', hoursAgo: 7 },
+  { kind: 'x', title: '线稿锁定法：12 张连续出图的角色一致性对比', url: 'https://x.com/ai_drawing_lab/status/1850000000000000001', meta: { author: '@ai_drawing_lab', likes: 2410, retweets: 386 }, who: '小鹿酱', group: 'AI 出图研究所', hoursAgo: 12 },
+  { kind: 'x', title: 'Short drama hooks: what moved our completion rate', url: 'https://x.com/shortdrama_ops/status/1850000000000000002', meta: { author: '@shortdrama_ops', likes: 1180, retweets: 204 }, who: '数据狗', group: '短剧出海交流', hoursAgo: 2 },
+  { kind: 'x', title: 'Running 6 coding agents in parallel with git worktree', url: 'https://x.com/devtools_weekly/status/1850000000000000003', meta: { author: '@devtools_weekly', likes: 5320, retweets: 911 }, who: 'Leo', group: 'Claude Code 实战营', hoursAgo: 10 },
+  { kind: 'wechat_article', title: '子 Agent 并行开发：worktree 隔离的 5 个细节', url: 'https://mp.weixin.qq.com/s/mock-worktree-0001', meta: { author: '编程实验室（虚构）', words: 4600 }, note: '讲了目录约束和合并顺序，和群里的做法一致', who: '张工', group: 'Claude Code 实战营', hoursAgo: 9 },
+  { kind: 'wechat_article', title: 'AI 绘本号 30 天：从 0 到 4,000 粉', url: 'https://mp.weixin.qq.com/s/mock-picturebook-0002', meta: { author: '小熊团团绘本（虚构）', words: 3200 }, note: '作者自述的选题和排期表', who: '七七', group: '小红书起号营', hoursAgo: 4 },
+  { kind: 'wechat_article', title: '短剧出海字幕：机翻 + 人工校对的成本账', url: 'https://mp.weixin.qq.com/s/mock-subtitle-0003', meta: { author: '出海手记（虚构）', words: 5100 }, who: 'Kevin', group: '短剧出海交流', hoursAgo: 3 },
+  { kind: 'netdisk', title: 'AI 漫画分镜模板素材包', url: 'https://pan.baidu.com/s/1mockStoryboardPack', code: 'mh16', meta: { provider: 'baidu' }, note: '分镜表 + 对话框素材，来源不明，商用前确认授权', who: '桃子', group: '水彩手绘研习社', hoursAgo: 13 },
+  { kind: 'netdisk', title: 'n8n 选题流水线工作流 JSON', url: 'https://pan.quark.cn/s/mockn8nflow', code: 'n8n5', meta: { provider: 'quark' }, who: 'Ryan', group: '飞书 · 增长小组', hoursAgo: 12 },
+  { kind: 'netdisk', title: '即梦线稿上色对比图 24 张', url: 'https://www.alipan.com/s/mockLineart24', code: 'xg7k', meta: { provider: 'alipan' }, who: '画画的阿木', group: '水彩手绘研习社', hoursAgo: 14 },
+  { kind: 'netdisk', title: 'TikTok 短剧 A/B 两版原片', url: 'https://pan.baidu.com/s/1mockDramaAB', meta: { provider: 'baidu' }, note: '群友说无提取码', who: '短剧老炮', group: '短剧出海交流', hoursAgo: 2 },
+  { kind: 'video', title: 'Claude Code 子 Agent 并行演示（录屏）', url: 'https://www.bilibili.com/video/BV1mock0worktree', meta: { description: '23 分钟，从建 worktree 到合并' }, who: '老K', group: 'Claude Code 实战营', hoursAgo: 11 },
+  { kind: 'video', title: '可灵运镜三段式对比', url: 'https://www.youtube.com/watch?v=mockKlingCam', meta: { description: '同一张图 5 次对比' }, who: 'Kevin', group: '短剧出海交流', hoursAgo: 8 },
+  { kind: 'doc', title: 'Claude Code hooks 文档', url: 'https://docs.anthropic.com/en/docs/claude-code/hooks', who: 'Leo', group: 'Claude Code 实战营', hoursAgo: 5 },
+  { kind: 'doc', title: '飞书多维表格 AI 字段说明', url: 'https://www.feishu.cn/hc/zh-CN/articles/mock-ai-field', who: '野生产品经理', group: '飞书 · 增长小组', hoursAgo: 13 },
+  { kind: 'doc', title: 'git-worktree 官方手册', url: 'https://git-scm.com/docs/git-worktree', who: 'Leo', group: 'Claude Code 实战营', hoursAgo: 10 },
+  { kind: 'web', title: '可灵 AI', url: 'https://klingai.com/', who: '短剧老炮', group: '短剧出海交流', hoursAgo: 8 },
+  { kind: 'web', title: 'DeepSeek API 定价', url: 'https://api-docs.deepseek.com/quick_start/pricing', note: '夜间折扣时段以官方页面为准', who: '程序员小王', group: 'Claude Code 实战营', hoursAgo: 6 },
+]
+
+export const DIGESTS: DigestSpec[] = [
+  { group: 'cc', summary: '今天的主线是子 Agent 并行：worktree 隔离、hooks 自动测试、规则按目录拆分，三条做法能串成一套完整的多 Agent 开发流程。',
+    highlights: ['6 个子 Agent 并行清完 40 个 TODO，合并冲突 2 处', 'PostToolUse hook 改完自动跑 lint 和测试，失败回传给 Agent', '字幕翻译提示词要写「保留人名」，否则每集译法不一样'], counts: [9, 3, 2, 2] },
+  { group: 'sh8', summary: '围绕角色一致性：先锁线稿再上色的两步法被反复验证，另有分镜模板素材包在群里流传。',
+    highlights: ['两步法连续 12 张五官基本不漂移', '4K 海报先 2K 定稿再分区放大，标题不糊', '分镜模板素材包（网盘，来源不明）'], counts: [5, 2, 2, 1] },
+  { group: 'aiimg', summary: '多图融合点名法和线稿上色是今天最有用的两条，群友都给了自测数据。',
+    highlights: ['多图融合逐张点名，10 次成 8 次', '可灵三段式运镜：同图 5 次对比，镜头基本按要求走', '代开学生认证话术在群里出现（违法高危，只记录）'], counts: [4, 2, 1, 2] },
+  { group: 'drama', summary: '短剧出海三件事：开头冲突前置的 A/B 数据、字幕本地化流水线、AI 分镜岗位招聘。',
+    highlights: ['开头 3 秒冲突前置，完播率 18% → 31%', 'Whisper + 大模型翻译，西语版每集约 3 元', '本周第三家公司招 AI 分镜，日结 600~800'], counts: [7, 3, 2, 4] },
+  { group: 'side', summary: '变现与踩坑并存：数字人同模板高频发布被限流，另有付费训练营的退款纠纷。',
+    highlights: ['数字人同模板日更 10 条，第 3 天播放断崖', '2,980 元训练营退款被拖延（未核实）', '代开学生认证话术跨群出现（违法高危，只记录）'], counts: [3, 0, 1, 3] },
+  { group: 'xhs', summary: '小红书运营：AI 绘本号 30 天复盘附了具体数字；多图融合做换装图、AI 漫画格数也在这里被讨论。',
+    highlights: ['绘本号 30 天涨粉 4,200，单篇最高 1.1 万赞', '多图融合失败时先减到两张图，排查是哪张在干扰', 'AI 漫画一话控制在 16 格以内'], counts: [3, 2, 1, 3] },
+  { group: 'growth', summary: '自动化为主：n8n 内容流水线每天出 5 套草稿；子 Agent 目录约束和数字人限流也在这里被讨论。',
+    highlights: ['n8n 选题 → 脚本 → 配图，每天 07:00 自动跑', '子 Agent 的 CLAUDE.md 只写自己的目录范围，避免互相覆盖', '同一模板批量发布容易被限流'], counts: [5, 2, 2, 2] },
+]
