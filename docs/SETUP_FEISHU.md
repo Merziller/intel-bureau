@@ -17,7 +17,7 @@ lark-cli **不在仓库里**，用官方 npm 包安装（需要 Node.js 20 以�
 powershell -ExecutionPolicy Bypass -File scripts\tools\get-lark-cli.ps1
 ```
 
-脚本会把 lark-cli 1.0.98 装到 `third_party\tools\lark-cli\`，并打印当前登录状态。
+脚本会把 lark-cli 1.0.100 装到 `third_party\tools\lark-cli\`，并打印当前登录状态。
 （如果你电脑上已经有 lark-cli，工作台也能自动找到。查找顺序：设置里填的路径 → PATH →
 `third_party\tools\lark-cli` → 环境里其它位置的 lark-cli。）
 

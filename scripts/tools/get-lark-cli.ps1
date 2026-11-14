@@ -1,13 +1,13 @@
 ﻿<#
 .SYNOPSIS
-  把飞书官方 lark-cli（npm 包 @larksuite/cli@1.0.98）安装到 third_party/tools/lark-cli，然后打印登录状态。
+  把飞书官方 lark-cli（npm 包 @larksuite/cli@1.0.100）安装到 third_party/tools/lark-cli，然后打印登录状态。
   npm 会按 package-lock 的 sha512 校验包本身；包的 postinstall 会下载对应平台的二进制，
   并用包内 checksums.txt 做 SHA-256 校验（不一致时安装失败）。可重复执行。
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File scripts\tools\get-lark-cli.ps1
 #>
 param(
-    [string]$Version = '1.0.98',
+    [string]$Version = '1.0.100',
     [switch]$Force
 )
 $ErrorActionPreference = 'Stop'

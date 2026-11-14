@@ -15,7 +15,7 @@
 
 - 微信（Windows）：`scripts/tools/get-wechat-data-analysis.ps1` —— 调 GitHub Releases API 取 `*Setup.exe`，用 API 返回的 `digest`（sha256）校验，并与 Release 附带的 `SHA256SUMS.txt` 交叉核对；**没有 digest 就中止，绝不跳过校验**。
 - 微信（macOS）：`scripts/tools/install-bundled-tools-mac.sh wechat` —— 固定下载 `v2.10.1` 的 `WeChatDataAnalysis-2.10.1-mac-arm64.dmg`，校验 sha256 `2bd75e0b5d1d1f18c52b90fbeb38c62b3a11a617588f7800da5a4929fa447fb6`。**仅 Apple Silicon + macOS 15 以上**，Intel Mac 没有官方包。
-- 飞书（Windows）：`scripts/tools/get-lark-cli.ps1` —— `npm install @larksuite/cli@1.0.98`，npm 按 lock 的 sha512 校验包，包的 postinstall 用包内 `checksums.txt` 校验二进制。
+- 飞书（Windows）：`scripts/tools/get-lark-cli.ps1` —— `npm install @larksuite/cli@1.0.100`，npm 按 lock 的 sha512 校验包，包的 postinstall 用包内 `checksums.txt` 校验二进制。
 - 飞书（macOS）：`scripts/tools/install-bundled-tools-mac.sh feishu` —— 按 CPU 下载官方 `lark-cli-1.0.100-darwin-arm64.tar.gz`（sha256 `d068a27f608335016a8a7fb1b3cd1fccfb96bda92075a027e2bf1c4c23134e30`）或 `-darwin-amd64.tar.gz`（sha256 `7f5d442e5da3ae62b03a5b552880b651637b16b2eed91b588afaca6d72a6643a`），校验后解压到 `third_party/tools/lark-cli/bin/`。
 
 ## QQ：不绑定具体实现
