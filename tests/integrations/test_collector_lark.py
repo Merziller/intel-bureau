@@ -99,7 +99,7 @@ def test_health_ok_and_missing_cli(tmp_path, monkeypatch):
     monkeypatch.setattr(lc, "find_lark_cli", lambda cli_path=None: (None, []))   # 不碰本机真实的 lark-cli
     missing = LarkCliCollector(collector_ctx(tmp_path, "feishu", {}), cli=LarkCli(runner=FakeLark([])))
     h = run(missing.health())
-    assert h.state is Health.UNCONFIGURED and "get-lark-cli.ps1" in h.hint
+    assert h.state is Health.UNCONFIGURED and lc.INSTALL_HINT in h.hint
 
 
 def test_list_groups(tmp_path):
@@ -178,8 +178,10 @@ def test_find_order(tmp_path, monkeypatch):
     assert find_lark_cli(str(explicit)) == (str(explicit), [])
     path, notes = find_lark_cli(str(tmp_path / "missing.exe"))
     assert path is None and "不存在" in notes[0]
-    shim = tmp_path / "node_modules" / ".bin" / "lark-cli.cmd"
-    native = tmp_path / "node_modules" / "@larksuite" / "cli" / "bin" / "lark-cli.exe"
+    # 名字跟着平台走：Windows 是 npm 的 lark-cli.cmd 外壳 + lark-cli.exe 原生，
+    # macOS / Linux 是同一目录下无扩展名的 lark-cli
+    shim = tmp_path / "node_modules" / ".bin" / lc.LOCAL_CMD.name
+    native = tmp_path / "node_modules" / lc._PKG_BIN / lc._PKG_EXE
     for p in (shim, native):
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text("")
