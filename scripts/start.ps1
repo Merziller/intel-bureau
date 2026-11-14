@@ -42,6 +42,42 @@ function Test-Bureau {
     }
 }
 
+function Test-PortInUse([int]$P) {
+    # 直接连一下最可靠：不依赖 Get-NetTCPConnection / netstat 的状态字段
+    # （有些 Windows 上监听 socket 的状态是空值，-State Listen 会漏掉）
+    $client = New-Object System.Net.Sockets.TcpClient
+    try {
+        $iar = $client.BeginConnect('127.0.0.1', $P, $null, $null)
+        if (-not $iar.AsyncWaitHandle.WaitOne(800)) { return $false }
+        $client.EndConnect($iar)
+        return $true
+    } catch {
+        return $false
+    } finally {
+        $client.Close()
+    }
+}
+
+function Get-PortOwner([int]$P) {
+    try {
+        foreach ($line in (& netstat.exe -ano 2>$null)) {
+            $f = @($line -split '\s+' | Where-Object { $_ })
+            if ($f.Count -lt 4 -or $f[0] -ne 'TCP') { continue }
+            if ($f[1] -notmatch ":$P$") { continue }
+            if ($f[2] -notmatch ':0$' -and $f[3] -ne 'LISTENING') { continue }
+            $owner = if ($f[3] -eq 'LISTENING') { $f[4] } else { $f[3] }
+            if ($owner -match '^\d+$') { return [int]$owner }
+        }
+    } catch { }
+    try {
+        $c = Get-NetTCPConnection -LocalPort $P -ErrorAction SilentlyContinue |
+            Where-Object { $_.RemotePort -eq 0 -or "$($_.State)" -eq 'Listen' } |
+            Select-Object -First 1
+        if ($c) { return [int]$c.OwningProcess }
+    } catch { }
+    return $null
+}
+
 function Find-Browser {
     $c = @(
         (Join-Path ${env:ProgramFiles(x86)} 'Microsoft\Edge\Application\msedge.exe'),
@@ -155,10 +191,11 @@ function Invoke-Gui {
         return
     }
 
-    $listener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
-    if ($listener) {
-        $pn = (Get-Process -Id $listener.OwningProcess -ErrorAction SilentlyContinue).ProcessName
-        throw "端口 $Port 已经被别的程序占用（$pn），工作台没法启动。`n关闭那个程序，或者双击「停止情报局.bat」后再试。"
+    if (Test-PortInUse $Port) {
+        $owner = Get-PortOwner $Port
+        $pn = if ($owner) { (Get-Process -Id $owner -ErrorAction SilentlyContinue).ProcessName } else { '' }
+        $who = if ($pn) { "（$pn）" } else { '' }
+        throw "端口 $Port 已经被别的程序占用$who，工作台没法启动。`n关闭那个程序，或者双击「停止情报局.bat」后再试。"
     }
 
     $env:PYTHONIOENCODING = 'utf-8'
