@@ -8,6 +8,7 @@ import hashlib
 import io
 import json
 import logging
+import os
 import subprocess
 from pathlib import Path
 
@@ -325,9 +326,10 @@ def test_ocr_llm_request_format(tmp_path):
     assert parts[1]["image_url"]["url"].startswith("data:image/png;base64,")
 
 
-# Windows 自带 OCR 依赖 scripts/tools/ocr.ps1，非 Windows 环境没有这个脚本（OCR 默认关闭），这里跳过
+# Windows 自带 OCR 只在 Windows 上可用（_ocr_windows 在其它系统直接返回空串），Linux / macOS 的 CI 一律跳过
 needs_win_ocr = pytest.mark.skipif(
-    not ocr_mod.OCR_SCRIPT.exists(), reason="这个包没有 Windows OCR 脚本（macOS 版不带 ocr.ps1）")
+    os.name != "nt" or not ocr_mod.OCR_SCRIPT.exists(),
+    reason="Windows 自带 OCR 只在 Windows 上可用")
 
 
 @needs_win_ocr
