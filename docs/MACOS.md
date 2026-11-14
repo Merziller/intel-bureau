@@ -13,8 +13,10 @@
 > | 图片里的文字（OCR） | 用系统自带 OCR，自动 | 系统没有可用的命令行 OCR，默认关闭；可在设置里改成用 AI 认图（`llm`） |
 > | 飞书工具 | 走 npm 装 | 按 CPU 自动选 `darwin-arm64` / `darwin-amd64` 官方包 |
 >
-> 这份文档的 macOS 部分是在 Windows 上做的**静态校验**（语法检查、哈希校验、结构检查），
-> 没有在真实的 Mac 上跑过完整流程。第一次装如果卡住，把终端窗口里的文字发到 Issue 里。
+> 这份文档的 macOS 部分，代码层面已经在 GitHub Actions 的 `macos-26-arm64`（Apple Silicon）上自动跑过：
+> pytest 380 passed、`bureau init`、`bureau demo seed`、`bureau run --demo --dry-run`、`bureau doctor` 全通过。
+> **还没有验证的是**：Finder 里双击 `.command` 的真实体验、三个接入工具（微信 / QQ / 飞书）的安装与联调、以及界面在 Mac 上的显示效果。
+> 第一次装如果卡住，把终端窗口里的文字发到 Issue 里。
 
 ---
 
