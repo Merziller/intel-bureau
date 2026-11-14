@@ -32,7 +32,19 @@ ask() {
   case "$ans" in n|N|no|NO) return 1 ;; *) return 0 ;; esac
 }
 
-sha256_of() { shasum -a 256 "$1" | awk '{print $1}'; }
+# 取 SHA-256：macOS 自带 shasum，Linux 一般用 sha256sum，再退到 openssl
+sha256_of() {
+  if command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$1" | awk '{print $1}'
+  elif command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{print $1}'
+  elif command -v openssl >/dev/null 2>&1; then
+    openssl dgst -sha256 "$1" | awk '{print $NF}'
+  else
+    bad '这台机器上找不到 shasum / sha256sum / openssl，无法校验文件'
+    return 1
+  fi
+}
 
 # download url dest：先下到 .part，成功后改名（失败不留半截文件）
 download() {
@@ -57,7 +69,11 @@ ensure() {
     download "$url" "$p" || return 1
   fi
   say "校验 $label（$(du -h "$p" | awk '{print $1}')，需要几秒）..."
-  actual="$(sha256_of "$p")"
+  actual="$(sha256_of "$p")" || { bad '校验工具不可用，已停止（不跳过校验）'; return 1; }
+  if [ -z "$actual" ]; then
+    bad '校验工具不可用，已停止（不跳过校验）'
+    return 1
+  fi
   if [ "$actual" != "$exp" ]; then
     bad "校验不一致！文件可能损坏或被替换。"
     say "  期望 $exp"
