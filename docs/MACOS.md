@@ -16,7 +16,7 @@
 > 这份文档的 macOS 部分，代码层面已经在 GitHub Actions 的 `macos-26-arm64`（Apple Silicon）上自动跑过：
 > pytest 380 passed、`bureau init`、`bureau demo seed`、`bureau run --demo --dry-run`、`bureau doctor` 全通过。
 > **还没有验证的是**：Finder 里双击 `.command` 的真实体验、三个接入工具（微信 / QQ / 飞书）的安装与联调、以及界面在 Mac 上的显示效果。
-> 第一次装如果卡住，把终端窗口里的文字发到 Issue 里。
+> 第一次装如果卡住，把终端窗口里的文字发到 [Issues](https://github.com/Merziller/intel-bureau/issues)，或加 QQ 1411574209 说明来意。
 
 ---
 

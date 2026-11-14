@@ -46,3 +46,4 @@ GitHub Desktop 的左侧会列出你改动过的文件。确认无误后：
 - 这个仓库是**公开**的，任何人都能看到。不要提交真实聊天记录、密钥、手机号、群名。
 - `data/`（数据库、报告、日志）、`config/settings.yaml`、`config/secrets.yaml`、`third_party/`（下载的第三方工具）都已在 `.gitignore` 里，正常不会被提交。
 - 提交前可以用 GitHub Desktop 的 **History** 标签页看一眼这次到底改了哪些文件。
+- 提交作者用的是 `332317400+Merziller@users.noreply.github.com`（GitHub 的隐私邮箱），真实邮箱不会出现在提交记录里。换电脑时记得在 GitHub Desktop 的 **File → Options → Git** 里填同一个邮箱，否则提交会显示成另一个人。

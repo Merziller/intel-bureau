@@ -267,6 +267,11 @@ bash scripts/tools/install-bundled-tools-mac.sh feishu    # 飞书（按 CPU 自
 
 不熟悉 git 命令的话，见 [docs/GITHUB.md](docs/GITHUB.md)：克隆、提交、推送、拉取，以及「文件太大被拒」「push 被拒绝」怎么处理。
 
+## 联系作者
+
+- **QQ**：1411574209（加好友请说明来意）
+- **GitHub Issues**：<https://github.com/Merziller/intel-bureau/issues>（装不上、报错、功能建议都可以在这里提，附上日志更容易定位）
+
 ## 许可
 
 本项目自有代码以 **MIT** 发布，见 [LICENSE](LICENSE)。接入时下载的第三方工具由各自作者授权，条款与注意事项见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)（本仓库不分发这些二进制）。
