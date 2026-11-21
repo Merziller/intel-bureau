@@ -49,12 +49,101 @@ async def create_run(request: Request, ctx: AppContext = Depends(get_ctx)) -> JS
         raise ApiError(400, "invalid_window", "window_hours 必须在 1~744 之间")
     demo = body.get("demo")
     demo = (ctx.mode() == "demo") if demo is None else bool(demo)
+
+    # 按日期重跑：body 里给 date="YYYY-MM-DD"，只处理本地时区那一天。
+    window_start = window_end = None
+    date_str = body.get("date")
+    if date_str:
+        from datetime import date as _date
+
+        from bureau.pipeline.window import day_window
+
+        if hours is not None:
+            raise ApiError(400, "invalid_window", "date 和 window_hours 不能同时指定")
+        try:
+            day = _date.fromisoformat(str(date_str))
+        except ValueError:
+            raise ApiError(400, "invalid_date", f"日期格式不对：{date_str}，要写成 2026-11-17 这样") from None
+        window_start, window_end = day_window(day, ctx.tz)
+
     channel_ids = body.get("channel_ids")
     req = RunRequest(trigger="manual", platforms=platforms, group_keys=_str_list(body.get("group_keys"), "group_keys"),
                      channel_ids=_str_list(channel_ids, "channel_ids") if channel_ids is not None else None,
                      window_hours=int(hours) if hours else None, window_mode="fixed_hours" if hours else "since_last",
-                     dry_run=bool(body.get("dry_run", False)), demo=demo)
+                     dry_run=bool(body.get("dry_run", False)), demo=demo,
+                     window_start=window_start, window_end=window_end)
     return await start_run(ctx, req)
+
+
+# ---------------------------------------------------------------- 手动出报（按日期，可多天）
+MAX_MANUAL_DAYS = 31
+
+
+def _parse_day(v: Any, field: str) -> Any:
+    from datetime import date as _date
+
+    try:
+        return _date.fromisoformat(str(v))
+    except (TypeError, ValueError):
+        raise ApiError(400, "invalid_date", f"{field} 格式不对：{v}，要写成 2026-11-17 这样") from None
+
+
+@router.post("/runs/manual")
+async def create_manual_run(request: Request, ctx: AppContext = Depends(get_ctx)) -> JSONResponse:
+    """手动出报：指定某一天或一个日期区间，每天单独出一份报告。
+
+    流水线同一时间只能跑一次（runner 有锁），所以多天必须由后端串行排队 ——
+    前端连发会立刻撞上 409。本接口校验完就交给 AppContext.start_manual_batch
+    在后台依次执行，并立刻返回排队清单。
+    """
+    from datetime import timedelta
+
+    from bureau.pipeline.window import day_window
+
+    body = await json_body(request)
+    date_from = _parse_day(body.get("date_from"), "date_from") if body.get("date_from") else None
+    date_to = _parse_day(body.get("date_to"), "date_to") if body.get("date_to") else None
+    single = _parse_day(body.get("date"), "date") if body.get("date") else None
+
+    if single is not None and (date_from is not None or date_to is not None):
+        raise ApiError(400, "invalid_date", "date 与 date_from/date_to 不能同时指定")
+    if single is not None:
+        date_from = date_to = single
+    if date_from is None or date_to is None:
+        raise ApiError(400, "invalid_date", "请至少指定一天：date，或 date_from + date_to")
+    if date_to < date_from:
+        raise ApiError(400, "invalid_date", "结束日期不能早于开始日期")
+
+    days = [date_from + timedelta(days=i) for i in range((date_to - date_from).days + 1)]
+    if len(days) > MAX_MANUAL_DAYS:
+        raise ApiError(400, "too_many_days", f"一次最多补 {MAX_MANUAL_DAYS} 天，当前选了 {len(days)} 天")
+
+    today = ctx.now().date()
+    future = [d for d in days if d > today]
+    if future:
+        raise ApiError(400, "invalid_date", f"不能补未来的日期：{'、'.join(d.isoformat() for d in future[:3])}")
+
+    platforms = _str_list(body.get("platforms"), "platforms")
+    bad = [p for p in platforms if p not in LIVE_PLATFORMS]
+    if bad:
+        raise ApiError(400, "invalid_platform", f"不支持的平台：{'、'.join(bad)}")
+    channel_ids = body.get("channel_ids")
+    channels = _str_list(channel_ids, "channel_ids") if channel_ids is not None else None
+    dry_run = bool(body.get("dry_run", True))          # 补历史默认只预览，不往通道推
+
+    busy = ctx.runner.busy
+    current = ctx.runner.current_dto() if busy else None
+    ctx.start_manual_batch(platforms=platforms, group_keys=_str_list(body.get("group_keys"), "group_keys"),
+                           channel_ids=channels, dry_run=dry_run, days=days, day_window=day_window)
+    return JSONResponse({
+        "started": True,
+        "total": len(days),
+        "dates": [d.isoformat() for d in days],
+        "dry_run": dry_run,
+        "busy_before": busy,
+        "current_run": current,
+        "note": ("当前已有运行在进行，本次会排在它后面依次执行" if busy else "已开始，按日期先后依次执行"),
+    }, status_code=202)
 
 
 @router.get("/runs")
